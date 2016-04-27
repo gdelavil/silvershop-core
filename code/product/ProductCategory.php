@@ -44,7 +44,7 @@ class ProductCategory extends Page
     {
         // Figure out the categories to check
         $groupids = array($this->ID);
-        if (!empty($recursive) && self::config()->include_child_groups) {
+        if (!empty($recursive) && $recursive && self::config()->include_child_groups) {
             $groupids += $this->AllChildCategoryIDs();
         }
         $products = Product::get()
