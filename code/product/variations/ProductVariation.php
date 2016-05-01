@@ -177,11 +177,15 @@ class ProductVariation extends DataObject implements Buyable
 
     public function getTitle()
     {
+        if (gettype($useLabel) == 'string') {
+            $useLabel = $useLabel === 'true' ? true : false;
+        }
         $values = $this->AttributeValues();
         if ($values->exists()) {
             $labelvalues = array();
             foreach ($values as $value) {
-                if (self::config()->title_has_label) {
+
+                if (self::config()->title_has_label && ($useLabel)) {
                     $labelvalues[] = $value->Type()->Label . self::config()->title_separator . $value->Value;
                 } else {
                     $labelvalues[] = $value->Value;
