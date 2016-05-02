@@ -175,7 +175,7 @@ class ProductVariation extends DataObject implements Buyable
         }
     }
 
-    public function getTitle()
+    public function getTitle($useLabel=true)
     {
         if (gettype($useLabel) == 'string') {
             $useLabel = $useLabel === 'true' ? true : false;
