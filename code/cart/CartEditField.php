@@ -5,8 +5,7 @@
  *
  * @package shop
  */
-class CartEditField extends FormField
-{
+class CartEditField extends FormField {
     protected $cart;
 
     protected $items;
@@ -15,8 +14,7 @@ class CartEditField extends FormField
 
     protected $editableItemsCallback;
 
-    public function __construct($name, $title, $cart)
-    {
+    public function __construct($name, $title, $cart) {
         parent::__construct($name, $title);
         $this->cart = $cart;
         $this->items = $cart->Items();
@@ -27,8 +25,7 @@ class CartEditField extends FormField
      *
      * @param string $template
      */
-    public function setTemplate($template)
-    {
+    public function setTemplate($template) {
         $this->template = $template;
         return $this;
     }
@@ -37,8 +34,7 @@ class CartEditField extends FormField
      * Allow overriding the given items list.
      * This helps with formatting, grouping, ordering etc.
      */
-    public function setItemsList(SS_List $list)
-    {
+    public function setItemsList(SS_List $list) {
         $this->items = $list;
         return $this;
     }
@@ -48,8 +44,7 @@ class CartEditField extends FormField
      *
      * @return SS_List
      */
-    public function getItemsList()
-    {
+    public function getItemsList() {
         return $this->items;
     }
 
@@ -59,8 +54,7 @@ class CartEditField extends FormField
      *
      * @param Closure $callback
      */
-    public function setEditableItemsCallback(Closure $callback)
-    {
+    public function setEditableItemsCallback(Closure $callback) {
         $this->editableItemsCallback = $callback;
     }
 
@@ -69,8 +63,7 @@ class CartEditField extends FormField
      *
      * @param array $properties
      */
-    public function Field($properties = array())
-    {
+    public function Field($properties = array()) {
         $editables = $this->editableItems();
         $customcartdata = array(
             'Items' => $editables,
@@ -92,8 +85,7 @@ class CartEditField extends FormField
      *
      * @param SS_List $items
      */
-    protected function editableItems()
-    {
+    protected function editableItems() {
         $editables = ArrayList::create();
         foreach ($this->items as $item) {
             $buyable = $item->Product();
@@ -113,10 +105,18 @@ class CartEditField extends FormField
             if ($buyable->has_many("Variations")) {
                 $variations = $buyable->Variations();
                 if ($variations->exists()) {
+
+                    $dropdownOptions = array();//$variations->map('ID', 'Title');
+                    foreach ($variations as $variation) {
+                        $price = $variation->Price;
+                        $variationName = $variation->getTitle(false) . ' ' . $price;
+                        array_push($dropdownOptions, $variationName);
+                    }
+
                     $variationfield = DropdownField::create(
                         $name . "[ProductVariationID]",
                         _t('CartEditField.VARIATION', "Variation"),
-                        $variations->map('ID', 'Title'),
+                        $dropdownOptions,
                         $item->ProductVariationID
                     );
                 }
@@ -125,9 +125,9 @@ class CartEditField extends FormField
             $editables->push(
                 $item->customise(
                     array(
-                        "QuantityField"  => $quantity,
+                        "QuantityField" => $quantity,
                         "VariationField" => $variationfield,
-                        "RemoveField"    => $remove,
+                        "RemoveField" => $remove,
                     )
                 )
             );
