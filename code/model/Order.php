@@ -29,7 +29,7 @@ class Order extends DataObject
         'ReceiptSent'            => 'SS_Datetime', //receipt emailed to customer
         'Printed'                => 'SS_Datetime',
         'Dispatched'             => 'SS_Datetime', //products have been sent to customer
-        'Status'                 => "Enum('Unpaid,Paid,Processing,Sent,Complete,AdminCancelled,MemberCancelled,Cart','Cart')",
+        'Status'                 => "Enum('Unpaid,Paid,Processing,Sent,Query,Complete,AdminCancelled,MemberCancelled,Cart','Cart')",
         //customer (for guest orders)
         'FirstName'              => 'Varchar',
         'Surname'                => 'Varchar',
