@@ -31,7 +31,7 @@ class Product extends Page implements Buyable
         'Featured'      => 'Boolean',
         'AllowPurchase' => 'Boolean',
 
-        'LowestPrice' => 'int',
+        'LowestPrice' => 'Float',
 
         'Popularity' => 'Float' //storage for ClaculateProductPopularity task
     );
